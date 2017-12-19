@@ -9,14 +9,22 @@
 
 var detectNetwork = function(cardNumber) {
 
-	if ((cardNumber.slice(0, 2) === '38' || cardNumber.slice(0, 2) === '39') && cardNumber.length === 14) {
+	let cardTwoDigit = cardNumber.slice(0, 2);
+	let cardThreeDigit = cardNumber.slice(0, 3);
+	let cardFourDigit = cardNumber.slice(0, 4);
+
+	if ((cardTwoDigit === '38' || cardTwoDigit === '39') && cardNumber.length === 14) {
 		return "Diner's Club";
-	} else if ((cardNumber.slice(0, 2) === '34' || cardNumber.slice(0, 2) === '37') && cardNumber.length === 15) {
+	} else if ( (cardTwoDigit === '34' || cardTwoDigit === '37') && cardNumber.length === 15) {
 		return "American Express";
-	} else if ((cardNumber[0] === '4') && (cardNumber.length === 13 || cardNumber.length === 16 || cardNumber.length === 19)) {
+	} else if ( (cardNumber[0] === '4') && (cardNumber.length === 13 || cardNumber.length === 16 || cardNumber.length === 19)) {
 		return "Visa";
-	} else if ((cardNumber.slice(0, 2) === '51' || cardNumber.slice(0, 2) === '52' || cardNumber.slice(0, 2) === '53' || cardNumber.slice(0, 2) === '54' || cardNumber.slice(0, 2) === '55') && cardNumber.length === 16) {
+	} else if ( (parseInt(cardTwoDigit) >= 51 && parseInt(cardTwoDigit) <= 55)  && cardNumber.length === 16) {
 		return "MasterCard";
+	} else if ( cardFourDigit === "6011" || cardTwoDigit === "65" || (parseInt(cardThreeDigit) >= 644 && parseInt(cardThreeDigit) <= 649) && (cardNumber.length === 16 || cardNumber.length === 19)) {
+		return 'Discover';
+	} else if ((cardFourDigit === '5018' || cardFourDigit === '5020' || cardFourDigit === '5038' || cardFourDigit === '6304') && (cardNumber.length >= 12 && cardNumber.length <= 19)) {
+		return 'Maestro';
 	}
 
   // Note: `cardNumber` will always be a string
