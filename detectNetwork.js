@@ -8,24 +8,35 @@
 //   2. The number of digits in the number (called the length)
 
 var detectNetwork = function(cardNumber) {
+	let len = cardNumber.length;
+	let cardVisa = parseInt(cardNumber[0]);
+	let cardTwoDigit = parseInt(cardNumber.slice(0, 2));
+	let cardThreeDigit = parseInt(cardNumber.slice(0, 3));
+	let cardFourDigit = parseInt(cardNumber.slice(0, 4));
+	let cardSixDigit = parseInt(cardNumber.slice(0, 6));
 
-	let cardTwoDigit = cardNumber.slice(0, 2);
-	let cardThreeDigit = cardNumber.slice(0, 3);
-	let cardFourDigit = cardNumber.slice(0, 4);
+	const switchValues = [4903, 4905, 4911, 4936, 564182, 633110, 6333, 6759]
 
-	if ((cardTwoDigit === '38' || cardTwoDigit === '39') && cardNumber.length === 14) {
-		return "Diner's Club";
-	} else if ( (cardTwoDigit === '34' || cardTwoDigit === '37') && cardNumber.length === 15) {
-		return "American Express";
-	} else if ( (cardNumber[0] === '4') && (cardNumber.length === 13 || cardNumber.length === 16 || cardNumber.length === 19)) {
-		return "Visa";
-	} else if ( (parseInt(cardTwoDigit) >= 51 && parseInt(cardTwoDigit) <= 55)  && cardNumber.length === 16) {
-		return "MasterCard";
-	} else if ( cardFourDigit === "6011" || cardTwoDigit === "65" || (parseInt(cardThreeDigit) >= 644 && parseInt(cardThreeDigit) <= 649) && (cardNumber.length === 16 || cardNumber.length === 19)) {
-		return 'Discover';
-	} else if ((cardFourDigit === '5018' || cardFourDigit === '5020' || cardFourDigit === '5038' || cardFourDigit === '6304') && (cardNumber.length >= 12 && cardNumber.length <= 19)) {
-		return 'Maestro';
+	if ((switchValues.includes(cardFourDigit) || switchValues.includes(cardSixDigit)) && (len === 16 || len === 18 || len === 19)) {
+		return 'Switch';
+	} else {
+		if ((cardTwoDigit === 38 || cardTwoDigit === 39) && len === 14) {
+			return "Diner's Club";
+		} else if ((cardTwoDigit === 34 || cardTwoDigit === 37) && len === 15) {
+			return "American Express";
+		} else if ((cardVisa === 4) && (len === 13 || len === 16 || len === 19)) {
+			return "Visa";
+		} else if ((cardTwoDigit >= 51 && cardTwoDigit <= 55)  && len === 16) {
+			return "MasterCard";
+		} else if (cardFourDigit === 6011 || cardTwoDigit === 65 || (cardThreeDigit >= 644 && cardThreeDigit <= 649) && (len === 16 || len === 19)) {
+			return 'Discover';
+		} else if ((cardFourDigit === 5018 || cardFourDigit === 5020 || cardFourDigit === 5038 || cardFourDigit === 6304) && (len >= 12 && len <= 19)) {
+			return 'Maestro';
+		} else if (((cardSixDigit >= 622126 && cardSixDigit <= 622925) || (cardThreeDigit >= 624 && cardThreeDigit <= 626) || (cardFourDigit >= 6282 && cardFourDigit <= 6288)) && (len >= 16 && len <= 19)) {
+			return 'China UnionPay';
+		}		
 	}
+
 
   // Note: `cardNumber` will always be a string
   // The Diner's Club network always starts with a 38 or 39 and is 14 digits long
